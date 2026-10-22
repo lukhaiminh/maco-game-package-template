@@ -4,14 +4,16 @@ Template để tạo một web game có thể:
 
 - chạy standalone sau `pnpm build` (`dist/index.html` là một file HTML);
 - được mount vào Maco Games/Nuxt qua `mountGame(container)`;
-- publish thành public npm package bằng GitHub Actions.
+- publish thành private package trên GitHub Packages.
 
 ## Bắt đầu
 
-1. Tạo repository **private** từ template này.
-2. Đổi `name`, `description`, `repository` và `version` trong `package.json`.
-3. Thay màn hình mẫu tại `src/main.ts` bằng game của bạn, giữ API `mountGame()` và `destroy()`.
-4. Nhờ Maco administrator cấp repository quyền dùng Actions secret `NPM_TOKEN`.
+1. Tạo repository **private** từ template này trong GitHub account của bạn.
+2. Cập nhật `package.json`:
+   - `name`: dùng scope GitHub của bạn, ví dụ `@lukhaiminh/space-runner`.
+   - `description`, `repository.url` và `version`.
+3. Thay màn hình mẫu tại `src/main.ts`; giữ API `mountGame(container)` và `destroy()`.
+4. Workflow dùng `GITHUB_TOKEN` tạm thời để publish private GitHub Package.
 
 ```bash
 pnpm install
@@ -27,8 +29,10 @@ pnpm version patch
 git push origin HEAD --follow-tags
 ```
 
-Xem [hướng dẫn publish](docs/PUBLISHING.md) để biết quyền npm, token và cách host cài package.
+Tag `vX.Y.Z` sẽ publish package private. Sau lần publish đầu, gửi package name và version cho Maco administrator để host được cấp quyền cài package.
 
-## Bảo mật
+Xem [hướng dẫn publish](docs/PUBLISHING.md) nếu cần thêm chi tiết.
 
-Không commit `.env`, `.npmrc` có token, hay private key. Package npm public có thể được bất kỳ ai tải xuống; đừng dùng chế độ này cho source hoặc asset cần bảo mật.
+## Quy tắc bảo mật
+
+Không commit token, `.env`, `.npmrc` có token hoặc private key. Không thêm token GitHub/Vercel của bạn vào repository hay gửi chúng cho Maco administrator.

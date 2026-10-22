@@ -1,5 +1,5 @@
 {
-  "name": "@maco-games/replace-game-name",
+  "name": "@replace-owner/replace-game-name",
   "version": "0.1.0",
   "description": "Replace this description before publishing.",
   "repository": {
@@ -16,8 +16,7 @@
     ".": "./src/main.ts"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org"
+    "registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "dev": "vite",

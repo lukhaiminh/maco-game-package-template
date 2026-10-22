@@ -1,4 +1,4 @@
-name: Publish public npm package
+name: Publish private GitHub Package
 
 on:
   push:
@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  packages: write
 
 jobs:
   publish:
@@ -15,7 +16,8 @@ jobs:
       - uses: actions/setup-node@v7
         with:
           node-version: 22
-          registry-url: https://registry.npmjs.org
+          registry-url: https://npm.pkg.github.com
+          scope: '@${{ github.repository_owner }}'
       - run: corepack enable
       - run: pnpm install --frozen-lockfile
       - run: pnpm typecheck
@@ -25,4 +27,4 @@ jobs:
           test "${GITHUB_REF_NAME#v}" = "$(node -p \"require('./package.json').version\")"
       - run: pnpm publish --no-git-checks
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

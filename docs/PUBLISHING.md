@@ -1,58 +1,30 @@
 # Phát hành game package
 
-## Chuẩn bị một game mới
+## Trước lần publish đầu
 
-1. Tạo repository private từ template này.
-2. Đổi các placeholder trong `package.json`:
-   - `name`: package npm duy nhất, ví dụ `@maco-games/space-runner`.
-   - `description` và `repository.url`.
-   - `version`: bắt đầu từ `0.1.0`.
-3. Thay UI mẫu trong `src/main.ts`, nhưng giữ export `mountGame(container)` và `destroy()` để host có thể dọn game khi đổi route.
-4. Đổi title và màu nền trong `index.html`.
-
-## Một lần cho Maco administrator
-
-1. Tạo npm organization/scope sở hữu package, ví dụ `@maco-games`.
-2. Tạo npm access token chỉ có quyền publish cần thiết cho scope/package đó.
-3. Trên GitHub organization, tạo Actions secret tên `NPM_TOKEN` và chỉ cho phép các repository game cần publish dùng secret này. Không gửi token cho collaborator và không commit token vào repository.
-
-## Publish
+1. Để repository ở chế độ **private**.
+2. Trong `package.json`, thay các placeholder:
+   - `name` phải dùng GitHub scope của repository owner, ví dụ `@lukhaiminh/space-runner`.
+   - `description`, `repository.url` và `version`.
+3. Chạy kiểm tra cục bộ:
 
 ```bash
 pnpm install --frozen-lockfile
-pnpm typecheck && pnpm build
+pnpm typecheck
+pnpm build
+```
+
+## Release
+
+```bash
 pnpm version patch
 git push origin HEAD --follow-tags
 ```
 
-Tag `vX.Y.Z` sẽ kích hoạt workflow. Workflow chỉ publish nếu tag khớp chính xác với `version` trong `package.json`.
+Tag `vX.Y.Z` kích hoạt GitHub Actions. Workflow dùng `GITHUB_TOKEN` của repository để publish package private lên GitHub Packages.
 
-## Dùng trong host Maco
+## Gửi cho Maco administrator
 
-Vì package publish trên npm public, host không cần token:
+Sau khi publish thành công, gửi tên package, version và URL repository. Administrator sẽ cấp cho host Maco Games quyền đọc package để Vercel cài package khi build.
 
-```bash
-pnpm add @maco-games/space-runner
-```
-
-```vue
-<script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { mountGame } from '@maco-games/space-runner'
-
-const container = ref<HTMLElement>()
-let game: ReturnType<typeof mountGame> | undefined
-
-onMounted(() => {
-  if (container.value) game = mountGame(container.value)
-})
-
-onBeforeUnmount(() => game?.destroy())
-</script>
-
-<template><div ref="container" /></template>
-```
-
-## Lưu ý về quyền sở hữu
-
-Repository private chỉ che source trên GitHub. Một package npm public vẫn cho bất kỳ ai tải JavaScript đã publish; game web chạy trên trình duyệt cũng không thể giữ kín mã client. Không publish npm public nếu game hoặc asset phải giữ bí mật.
+Không gửi token GitHub/Vercel và không thêm token vào source code hoặc `.npmrc`.
