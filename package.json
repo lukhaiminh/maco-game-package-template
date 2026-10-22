@@ -1,6 +1,6 @@
 {
   "name": "@lukhaiminh/maco-game-package-template",
-  "version": "0.1.3",
+  "version": "0.1.0",
   "description": "Template for independently released Maco browser games.",
   "repository": {
     "type": "git",
