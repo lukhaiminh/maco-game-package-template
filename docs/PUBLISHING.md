@@ -23,8 +23,18 @@ git push origin HEAD --follow-tags
 
 Tag `vX.Y.Z` kích hoạt GitHub Actions. Workflow dùng `GITHUB_TOKEN` của repository để publish package private lên GitHub Packages.
 
+## Cấp quyền cho Maco Games
+
+Sau lần publish đầu:
+
+1. Trên GitHub, vào **Profile → Packages** và mở package vừa publish.
+2. Chọn **Package settings** → **Manage access** → **Invite teams or people**.
+3. Thêm đúng tài khoản bot do Maco administrator cung cấp, rồi chọn role **Read**.
+
+`Read` là quyền tối thiểu để Vercel của Maco Games tải package khi build. Không cấp `Write`/`Admin`, không gửi token, và không cần thêm bot vào source repository.
+
 ## Gửi cho Maco administrator
 
-Sau khi publish thành công, gửi tên package, version và URL repository. Administrator sẽ cấp cho host Maco Games quyền đọc package để Vercel cài package khi build.
+Gửi tên package, version và URL repository. Administrator sẽ cấu hình host Maco Games cài package bằng token của bot.
 
 Không gửi token GitHub/Vercel và không thêm token vào source code hoặc `.npmrc`.

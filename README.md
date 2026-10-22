@@ -29,7 +29,7 @@ pnpm version patch
 git push origin HEAD --follow-tags
 ```
 
-Tag `vX.Y.Z` sẽ publish package private. Sau lần publish đầu, gửi package name và version cho Maco administrator để host được cấp quyền cài package.
+Tag `vX.Y.Z` sẽ publish package private. Sau lần publish đầu, mở package trên GitHub → **Package settings** → **Manage access** → **Invite teams or people**, rồi thêm tài khoản bot do Maco administrator cung cấp với role **Read**. Sau đó gửi package name và version cho Maco administrator để host cài package.
 
 Xem [hướng dẫn publish](docs/PUBLISHING.md) nếu cần thêm chi tiết.
 
